@@ -58,7 +58,7 @@ export default class ProjectsController {
                 const projects = await Project
                     .query()
                     .where('userId', user.id)
-                return projects
+                return response.json({ projects })
             } catch (error) {
                 return response.status(404).json({ msg: "Not Authorized" })
             }
@@ -135,8 +135,6 @@ export default class ProjectsController {
     public async create({ auth, request, response }: HttpContextContract) {
         const user = await auth.authenticate()
         const data = await request.validate(CreateProjectValidator)
-
-        console.log(user, data)
 
         if (user) {
             const newProject = await Project.create({

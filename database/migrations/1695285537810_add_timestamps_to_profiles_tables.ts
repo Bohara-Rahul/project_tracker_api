@@ -15,6 +15,8 @@ export default class extends BaseSchema {
 
   public async down () {
     this.schema.alterTable(this.tableName, (table) => {
+      table.dropColumn('created_at')
+      table.dropColumn('updated_at')
     })
   }
 }

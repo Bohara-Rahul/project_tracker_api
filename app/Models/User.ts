@@ -42,13 +42,13 @@ export default class User extends BaseModel {
     }
   }
 
-  // @afterSave()
-  // public static async createProfile (user: User) {
-  //   if (user) {
-  //     const profile = await Profile.create({
-  //       userId: user.id,
-  //     })
-  //     await profile.save()
-  //   }
-  // }
+  @afterSave()
+  public static async createProfile (user: User) {
+    if (user) {
+      const profile = await Profile.create({
+        userId: user.id,
+      })
+      await profile.save()
+    }
+  }
 }

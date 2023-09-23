@@ -221,11 +221,12 @@ export default class ProjectsController {
      *            description: Project not found            
     */
 
-    public async delete({ bouncer, request }: HttpContextContract) {
+    public async delete({ bouncer, request, response }: HttpContextContract) {
         const project = await Project.findOrFail(request.param('id'))
         await bouncer.with('ProjectPolicy').authorize('delete', project)
         await project.delete()
-    }
+        response.status(200).json({ msg: 'Project successfully deleted' })
+    } 
 
 }
 

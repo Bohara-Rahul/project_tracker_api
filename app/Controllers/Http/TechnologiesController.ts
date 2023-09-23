@@ -88,17 +88,13 @@ export default class TechnologiesController {
         const user = await auth.authenticate()
 
         if (user) {
-            try {
-                const { name } = await request.validate(CreateTechnologyValidator)
-                const newTechnology = await Technology.create({
+            const { name } = await request.validate(CreateTechnologyValidator)
+            const newTechnology = await Technology.create({
                     name
                 })
-                await newTechnology.save()
-                return response.status(201).json(newTechnology)
-            } catch (error) {
-                response.json({ msg: "This technology has already been created"})
+            await newTechnology.save()
+            return response.status(201).json(newTechnology)
             }
-        }
         return response.status(401).json({ msg: 'You are unauthorized' })
         
     }

@@ -8,7 +8,8 @@
     "start": "node server.js",
     "test": "node ace test",
     "lint": "eslint . --ext=.ts",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postbuild": "node ace swagger:generate && cp -a docs/ build/docs"
   },
   "eslintConfig": {
     "extends": [

@@ -33,11 +33,11 @@ export default class CreateProjectValidator {
       rules.required()
     ]),
 
-    // technologies: schema
-    //   .array()
-    //   .members(schema.object().members({
-    //     name: schema.string()
-    //   }))
+    technologies: schema
+      .array()
+      .members(schema.object().members({
+        name: schema.string()
+      }))
   })
 
   /**

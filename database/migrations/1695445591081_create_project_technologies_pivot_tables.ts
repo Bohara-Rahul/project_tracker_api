@@ -10,8 +10,8 @@ export default class extends BaseSchema {
       table.primary(['technology_id', 'project_id'])  // Making the combination of both columns as the primary key
       
       /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
+      * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
+      */
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Project from 'App/Models/Project';
+import Technology from 'App/Models/Technology';
 // import Technology from 'App/Models/Technology';
 import CreateProjectValidator from 'App/Validators/CreateProjectValidator';
 
@@ -58,6 +59,7 @@ export default class ProjectsController {
                 const projects = await Project
                     .query()
                     .where('userId', user.id)
+                    .preload('technologies')
                 return response.json({ projects })
             } catch (error) {
                 return response.status(404).json({ msg: "Not Authorized" })
@@ -122,6 +124,9 @@ export default class ProjectsController {
     *            description:
     *              type: string
     *              description: Description about the project
+    *            technologies:
+    *              type: array
+    *              description: Id of the technology 
     *           required:
     *             - name
     *             - description           
@@ -134,13 +139,18 @@ export default class ProjectsController {
 
     public async create({ auth, request, response }: HttpContextContract) {
         const user = await auth.authenticate()
-        const data = await request.validate(CreateProjectValidator)
-
+        const { name, description, technologies } = request.all()
+        console.log(technologies)
+        
+        let addTechnologies: string[] = []
+        technologies.forEach((name: string) => addTechnologies.push(name))
         if (user) {
             const newProject = await Project.create({
-                ...data, 
+                name,
+                description,
                 userId: user.id
             })
+            newProject.related('technologies').save(technologies)
             await newProject.save()
             return response.status(201).send(newProject)
         }

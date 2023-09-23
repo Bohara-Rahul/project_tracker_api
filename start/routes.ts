@@ -34,6 +34,12 @@ Route.get('/', async () => {
 //   return await products
 // })
 
+Route.get('/github/redirect', async ({ ally }) => {
+  return ally.use('github').redirect()
+})
+
+Route.get('/github/callback', 'UsersController.githubLogin')
+
 Route.group(() => {
   Route.post("register", "UsersController.register")
   Route.post("login", "UsersController.login")

@@ -155,6 +155,36 @@ export default class UsersController {
     //         return response.status(404).json({ msg: 'You cannot update this profile' })
     //     }
     // }
+
+    public async githubLogin ({ ally, auth }: HttpContextContract) {
+        const github = ally.use('github')
+    /**
+     * User has explicitly denied the login request
+     */
+        if (github.accessDenied()) {
+        return 'Access was denied'
+        }
+    
+        /**
+         * Unable to verify the CSRF state
+         */
+        if (github.stateMisMatch()) {
+        return 'Request expired. Retry again'
+        }
+    
+        /**
+         * There was an unknown error during the redirect
+         */
+        if (github.hasError()) {
+        return github.getError()
+        }
+    
+        /**
+         * Finally, access the user
+         */
+        const user = await github.accessToken
+        await auth.use('api').attempt
+    }
     
 }
 

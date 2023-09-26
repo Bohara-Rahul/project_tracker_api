@@ -6,6 +6,7 @@ export default class ProjectPolicy extends BasePolicy {
 	public async viewAll(user: User) {
 		return user.roleId === Role.ADMIN
 	}
+	
 	public async view(user: User, project: Project) {
 		return user.id === project.userId
 	}

@@ -34,15 +34,16 @@ Route.get('/', async () => {
 //   return await products
 // })
 
-Route.get('/github/redirect', async ({ ally }) => {
-  return ally.use('github').redirect()
-})
+Route.get('/auth/google', 'SocialAuthController.redirectToGoogle')
+Route.get('/authenticated/google', 'SocialAuthController.googleCallback')
 
-Route.get('/github/callback', 'UsersController.githubLogin')
+Route.get('/auth/github', 'SocialController.redirectToGithub')
+Route.get('/authenticated/github', 'SocialAuthController.githubCallback')
 
 Route.group(() => {
   Route.post("register", "UsersController.register")
   Route.post("login", "UsersController.login")
+  Route.get("logout", "UsersController.logout")
 
   Route.group(() => {
     Route.get("profile", "UsersController.viewProfile")

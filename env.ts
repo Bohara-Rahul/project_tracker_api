@@ -32,8 +32,10 @@ export default Env.rules({
   // google
   GOOGLE_CLIENT_ID: Env.schema.string(),
   GOOGLE_CLIENT_SECRET: Env.schema.string(),
+  GOOGLE_CALLBACK_URL: Env.schema.string(),
 
   // github
   GITHUB_CLIENT_ID: Env.schema.string(),
   GITHUB_CLIENT_SECRET: Env.schema.string(),
+  GITHUB_CALLBACK_URL: Env.schema.string()
 })

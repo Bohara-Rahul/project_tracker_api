@@ -132,6 +132,50 @@ export default class UsersController {
         }
     }
 
+    /**
+	* @swagger
+	* /api/login:
+	*   post:
+	*     tags:
+	*       - Users
+    *     summary: Login a User 
+	*     requestBody:
+	*       required: true         
+	*       content:
+	*         application/json:
+	*           description: User payload
+	*           schema: 
+    *             type: object
+    *             properties:
+	*                 email:
+	*                   type: string
+	*                   example: 'Your email'
+	*                   required: true
+    *                 password:
+    *                   type: string
+    *                   example: "Your secret password"
+    *                   required: true       
+	*     produces:
+	*       - application/json
+	*     responses:
+	*       200:
+	*         description: Success
+	*         content:
+	*           application/json:
+	*             schema:
+	*               $ref: '#/components/schemas/User'
+    *       400:
+    *         description: Bad Request
+	*/
+    public async logout({ auth, response }: HttpContextContract) {
+        try {
+            await auth.logout()
+            response.json({ msg: 'Successfully logged out' })
+        } catch (error) {
+            response.json({ msg: 'Could not logout' })
+        }
+    }
+
     public async viewProfile({ auth, response }: HttpContextContract) {
         const user = await auth.authenticate()
         if (user) {
@@ -156,35 +200,6 @@ export default class UsersController {
     //     }
     // }
 
-    public async githubLogin ({ ally, auth }: HttpContextContract) {
-        const github = ally.use('github')
-    /**
-     * User has explicitly denied the login request
-     */
-        if (github.accessDenied()) {
-        return 'Access was denied'
-        }
-    
-        /**
-         * Unable to verify the CSRF state
-         */
-        if (github.stateMisMatch()) {
-        return 'Request expired. Retry again'
-        }
-    
-        /**
-         * There was an unknown error during the redirect
-         */
-        if (github.hasError()) {
-        return github.getError()
-        }
-    
-        /**
-         * Finally, access the user
-         */
-        const user = await github.accessToken
-        await auth.use('api').attempt
-    }
     
 }
 
